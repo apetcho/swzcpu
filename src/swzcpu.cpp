@@ -5,29 +5,32 @@
 // -*----------------------------------------------------------------*-
 namespace swzcpu{
 // -
+std::map<Register, i64> Computer::registers;
+// -*-
+void Computer::init_registers(){
+    std::map<Register, i64> result{};
+    result[Register::r0] = static_cast<i64>(Register::r0);
+    result[Register::r1] = static_cast<i64>(Register::r1);
+    result[Register::r2] = static_cast<i64>(Register::r2);
+    result[Register::r3] = static_cast<i64>(Register::r3);
+    result[Register::r4] = static_cast<i64>(Register::r4);
+    result[Register::r5] = static_cast<i64>(Register::r5);
+    result[Register::r6] = static_cast<i64>(Register::r6);
+    result[Register::r7] = static_cast<i64>(Register::r7);
+    result[Register::f0] = static_cast<i64>(Register::f0);
+    result[Register::f1] = static_cast<i64>(Register::f1);
+    result[Register::f2] = static_cast<i64>(Register::f2);
+    result[Register::f3] = static_cast<i64>(Register::f3);
+    result[Register::f4] = static_cast<i64>(Register::f4);
+    result[Register::f5] = static_cast<i64>(Register::f5);
+    result[Register::f6] = static_cast<i64>(Register::f6);
+    result[Register::f7] = static_cast<i64>(Register::f7);
+    //return result;
+    Computer::registers = result;
+}
 
 // -*-
-// void Computer::init_registers(){
-//     std::map<Register, i64> result{};
-//     result[Register::r0] = static_cast<i64>(Register::r0);
-//     result[Register::r1] = static_cast<i64>(Register::r1);
-//     result[Register::r2] = static_cast<i64>(Register::r2);
-//     result[Register::r3] = static_cast<i64>(Register::r3);
-//     result[Register::r4] = static_cast<i64>(Register::r4);
-//     result[Register::r5] = static_cast<i64>(Register::r5);
-//     result[Register::r6] = static_cast<i64>(Register::r6);
-//     result[Register::r7] = static_cast<i64>(Register::r7);
-//     result[Register::f0] = static_cast<i64>(Register::f0);
-//     result[Register::f1] = static_cast<i64>(Register::f1);
-//     result[Register::f2] = static_cast<i64>(Register::f2);
-//     result[Register::f3] = static_cast<i64>(Register::f3);
-//     result[Register::f4] = static_cast<i64>(Register::f4);
-//     result[Register::f5] = static_cast<i64>(Register::f5);
-//     result[Register::f6] = static_cast<i64>(Register::f6);
-//     result[Register::f7] = static_cast<i64>(Register::f7);
-//     this->m_registers = result;
-// }
-
+std::map<Instruction, i64> Computer::instructions;
 // -*-
 void Computer::init_instructions(){
     std::map<Instruction, i64> result{};
@@ -79,7 +82,7 @@ void Computer::init_instructions(){
 
     result[Instruction::hlt] = static_cast<i64>(Instruction::hlt);
 
-    this->m_instructions = result;
+    Computer::instructions = result;
 }
 
 // -*- 0x00 00 00 00 00 00 00 FF
@@ -87,10 +90,14 @@ void Computer::init_instructions(){
 i64 Computer::firstByte = 0x00000000000000FF;
 // -*-
 Computer::Computer(std::vector<i64> code){
+    if(Computer::instructions.empty()){
+        Computer::init_instructions();
+    }
+    if(Computer::registers.empty()){
+        Computer::init_registers();
+    }
     this->m_size = code.size();
     this->m_memory = code;
-    // this->init_registers();
-    this->init_instructions();
     this->m_sp = this->m_size - 1;
     this->m_pc = -1;
     this->m_inst = Instruction::clf;
@@ -106,7 +113,7 @@ void Computer::run(){
 
 void Computer::set_instruction(){
     auto val = this->m_memory[this->m_pc] & Computer::firstByte;
-    for(auto entry: this->m_instructions){
+    for(auto entry: this->instructions){
         if(entry.second == val){
             this->m_inst = entry.first;
             return;

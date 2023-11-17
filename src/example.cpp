@@ -24,12 +24,12 @@ struct Example{
         std::cout << "-*--------------------------------------*-\n";
         std::cout << "-*-          R E G I S T E R S         -*-\n";
         std::cout << "-*--------------------------------------*-\n";
-        this->print(cpu.registers());
+        this->print(cpu.get_registers());
         std::cout << std::endl;
         std::cout << "-*--------------------------------------*-\n";
         std::cout << "-*- F L O A T I N G  R E G I S T E R S -*-\n";
         std::cout << "-*--------------------------------------*-\n";
-        this->print(cpu.fregisters());
+        this->print(cpu.get_fregisters());
         std::cout << std::endl;
     }
 
@@ -58,3 +58,42 @@ private:
         std::cout << std::endl;
     }
 };
+
+// -*-
+int main(int argc, char **argv){
+    using namespace swzcpu;
+    Computer::init_registers();
+    Computer::init_instructions();
+    std::vector<i64> code = {
+        // - lii r0, 1
+        Computer::instructions[Instruction::lii],
+        Computer::registers[Register::r0],
+        1,
+        // - lii, r1, 5
+        Computer::instructions[Instruction::lii],
+        Computer::registers[Register::r1],
+        5,
+        // - lii r2, 1
+        Computer::instructions[Instruction::lii],
+        Computer::registers[Register::r2],
+        1,
+        // - mul, r0, r1
+        Computer::instructions[Instruction::mul],
+        Computer::registers[Register::r0],
+        Computer::registers[Register::r1],
+        // - sub, r1, r2
+        Computer::instructions[Instruction::sub],
+        Computer::registers[Register::r1],
+        Computer::registers[Register::r2],
+        // - jnz, 8
+        Computer::instructions[Instruction::jnz], 8,
+        // - hlt
+        Computer::instructions[Instruction::hlt]
+    };
+
+    // -*-
+    Example app(code);
+    app();
+
+    return EXIT_SUCCESS;
+}
