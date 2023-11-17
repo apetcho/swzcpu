@@ -67,8 +67,8 @@ static constexpr int NUM_INSTRUCTIONS = 42;
 // -*--------------------*-
 class Computer{
 private:
-    std::vector<i64> m_mem;
-    i64 m_capacity;
+    std::vector<i64> m_code;
+    i64 m_size;
 
     // -*- registers
     i64 m_pc;
@@ -87,7 +87,7 @@ private:
     i64 m_gtz;
 
 public:
-    Computer(std::vector<i64> code, i64 capacity);
+    Computer(std::vector<i64> code);
     ~Computer() = default;
     void run();
     void fetch();
@@ -96,8 +96,12 @@ public:
     void set(i64 a, i64 b);
     void fset(f64 a, f64 b);
     // -
-    static std::map<Register, i64> registers;
-    static std::map<Instruction, i64> instructions;
+private:
+    std::map<Register, i64> m_registers;
+    std::map<Instruction, i64> m_instructions;
+
+    void init_instructions();
+    void init_registers();
 };
 
 // -*----------------------------------------------------------------*-

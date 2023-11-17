@@ -5,11 +5,9 @@
 // -*----------------------------------------------------------------*-
 namespace swzcpu{
 // -
-std::map<Register, i64> Computer::registers;
-std::map<Instruction, i64> Computer::instructions;
 
 // -*-
-std::map<Register, i64> init_registers(){
+void Computer::init_registers(){
     std::map<Register, i64> result{};
     result[Register::r0] = static_cast<i64>(Register::r0);
     result[Register::r1] = static_cast<i64>(Register::r1);
@@ -27,11 +25,11 @@ std::map<Register, i64> init_registers(){
     result[Register::f5] = static_cast<i64>(Register::f5);
     result[Register::f6] = static_cast<i64>(Register::f6);
     result[Register::f7] = static_cast<i64>(Register::f7);
-    return result;
+    this->m_registers = result;
 }
 
 // -*-
-std::map<Instruction, i64> init_instructions(){
+void Computer::init_instructions(){
     std::map<Instruction, i64> result{};
     result[Instruction::clf] = static_cast<i64>(Instruction::clf);
     result[Instruction::cmp] = static_cast<i64>(Instruction::cmp);
@@ -81,7 +79,19 @@ std::map<Instruction, i64> init_instructions(){
 
     result[Instruction::hlt] = static_cast<i64>(Instruction::hlt);
 
-    return result;
+    this->m_instructions = result;
+}
+
+
+// -*-
+Computer::Computer(std::vector<i64> code){
+    this->m_size = code.size();
+    this->m_code = code;
+    this->init_registers();
+    this->init_instructions();
+    this->m_sp = this->m_size - 1;
+    this->m_pc = -1;
+    this->m_inst = 0;
 }
 
 // -*----------------------------------------------------------------*-
