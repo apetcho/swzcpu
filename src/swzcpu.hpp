@@ -67,7 +67,7 @@ static constexpr int NUM_INSTRUCTIONS = 42;
 // -*--------------------*-
 class Computer{
 private:
-    std::vector<i64> m_code;
+    std::vector<i64> m_memory;
     i64 m_size;
 
     // -*- registers
@@ -97,11 +97,13 @@ public:
     void fset(f64 a, f64 b);
     // -
 private:
+    static i64 firstByte;
     std::map<Register, i64> m_registers;
     std::map<Instruction, i64> m_instructions;
 
     void init_instructions();
     void init_registers();
+    void set_instruction();
 };
 
 // -*----------------------------------------------------------------*-

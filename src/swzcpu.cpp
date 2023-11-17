@@ -82,11 +82,13 @@ void Computer::init_instructions(){
     this->m_instructions = result;
 }
 
+// -*- 0x00 00 00 00 00 00 00 FF
 
+i64 Computer::firstByte = 0x00000000000000FF;
 // -*-
 Computer::Computer(std::vector<i64> code){
     this->m_size = code.size();
-    this->m_code = code;
+    this->m_memory = code;
     this->init_registers();
     this->init_instructions();
     this->m_sp = this->m_size - 1;
@@ -99,6 +101,16 @@ void Computer::run(){
     while(this->m_inst != Instruction::hlt){
         this->fetch();
         this->execute();
+    }
+}
+
+void Computer::set_instruction(){
+    auto val = this->m_memory[this->m_pc] & Computer::firstByte;
+    for(auto entry: this->m_instructions){
+        if(entry.second == val){
+            this->m_inst = entry.first;
+            return;
+        }
     }
 }
 
