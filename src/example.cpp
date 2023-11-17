@@ -21,6 +21,13 @@ struct Example{
         std::cout << std::endl;
     }
 
-    void print(const std::array<swzcpu::i64, 8>& vec);
+    // -*-
+    void print(const std::array<swzcpu::i64, 8>& vec){
+        for(auto item: vec){
+            std::cout << std::dec << item << " ";
+        }
+        std::cout << std::endl;
+    }
+
     void print(const std::array<swzcpu::f64, 8>& vec);
 };
