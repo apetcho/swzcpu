@@ -20,7 +20,8 @@ using f64 = double;
 // -*-------------*-
 // -*- Registers -*-
 // -*-------------*-
-enum class Register:i64{
+// enum class Register:i64
+enum Resgister{
     // -
     r0, r1, r2, r3, r4, r5, r6, r7,
     // -
@@ -74,7 +75,7 @@ private:
     i64 m_pc;
     i64 m_sp;
     std::array<i64, 8> m_regs;
-    std::array<i64, 8> m_fregs;
+    std::array<f64, 8> m_fregs;
 
     // -*- instructions
     Instruction m_inst;
@@ -96,13 +97,16 @@ public:
     void set(i64 a, i64 b);
     void fset(f64 a, f64 b);
     // -
+    std::array<i64, 8> registers() const { return this->m_regs; }
+    std::array<f64, 8> fregisters() const { return this->m_fregs; }
+
 private:
     static i64 firstByte;
-    std::map<Register, i64> m_registers;
+    // std::map<Register, i64> m_registers;
     std::map<Instruction, i64> m_instructions;
 
     void init_instructions();
-    void init_registers();
+    // void init_registers();
     void set_instruction();
 };
 
