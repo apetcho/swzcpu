@@ -114,6 +114,14 @@ void Computer::set_instruction(){
     }
 }
 
+// -*-
+void Computer::fetch(){
+    this->m_pc++;
+    this->set_instruction();
+    this->m_dest = this->m_memory[this->m_pc+1];
+    this->m_src = this->m_memory[this->m_pc+2];
+}
+
 // -*----------------------------------------------------------------*-
 }//-*- end::namespace::swzcpu                                       -*-
 // -*----------------------------------------------------------------*-
