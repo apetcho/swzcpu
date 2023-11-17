@@ -1,5 +1,5 @@
 #include<iostream>
-
+#include<iomanip>
 #include "swzcpu.hpp"
 
 // -*-
@@ -9,9 +9,13 @@ struct Example{
 
     Example() = default;
     ~Example() = default;
+    Example(std::vector<swzcpu::i64> vec): code{vec}{}
 
     // -*- Make this a callable
     void operator()(){}
     // -*-
+    void print(const std::vector<swzcpu::i64>& vec);
     
+    void print(const std::array<swzcpu::i64, 8>& vec);
+    void print(const std::array<swzcpu::f64, 8>& vec);
 };
