@@ -37,7 +37,7 @@ private:
     // -*-
     void print(const std::vector<swzcpu::i64>& vec){
         for(auto item: vec){
-            std::cout << std::dec << item << " ";
+            std::cout << "0x" << std::setw(16) << std::setfill('0') << std::hex << item << "\n";
         }
         std::cout << std::endl;
     }
@@ -45,7 +45,7 @@ private:
     // -*-
     void print(const std::array<swzcpu::i64, 8>& vec){
         for(auto item: vec){
-            std::cout << std::dec << item << " ";
+            std::cout << "0x" << std::setw(16) << std::setfill('0') << std::hex << item << "\n";
         }
         std::cout << std::endl;
     }
@@ -53,7 +53,7 @@ private:
     // -*-
     void print(const std::array<swzcpu::f64, 8>& vec){
         for(auto item: vec){
-            std::cout << std::dec << item << " ";
+            std::cout << "0x" << std::setw(16) << std::setfill('0') << std::hex << item << "\n";
         }
         std::cout << std::endl;
     }

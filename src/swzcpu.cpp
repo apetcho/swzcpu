@@ -8,7 +8,7 @@ namespace swzcpu{
 std::map<Register, i64> Computer::registers;
 // -*-
 void Computer::init_registers(){
-    std::map<Register, i64> result{};
+    std::map<Register, i64>& result = Computer::registers;
     result[Register::r0] = static_cast<i64>(Register::r0);
     result[Register::r1] = static_cast<i64>(Register::r1);
     result[Register::r2] = static_cast<i64>(Register::r2);
@@ -25,15 +25,13 @@ void Computer::init_registers(){
     result[Register::f5] = static_cast<i64>(Register::f5);
     result[Register::f6] = static_cast<i64>(Register::f6);
     result[Register::f7] = static_cast<i64>(Register::f7);
-    //return result;
-    Computer::registers = result;
 }
 
 // -*-
 std::map<Instruction, i64> Computer::instructions;
 // -*-
 void Computer::init_instructions(){
-    std::map<Instruction, i64> result{};
+    std::map<Instruction, i64>& result = Computer::instructions;
     result[Instruction::clf] = static_cast<i64>(Instruction::clf);
     result[Instruction::cmp] = static_cast<i64>(Instruction::cmp);
     result[Instruction::cmpi] = static_cast<i64>(Instruction::cmpi);
@@ -82,7 +80,7 @@ void Computer::init_instructions(){
 
     result[Instruction::hlt] = static_cast<i64>(Instruction::hlt);
 
-    Computer::instructions = result;
+    
 }
 
 // -*- 0x00 00 00 00 00 00 00 FF
