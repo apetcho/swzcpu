@@ -323,6 +323,14 @@ void Computer::set(i64 x, i64 y){
     this->m_gtz = (delta > 0);
 }
 
+// -*-
+void Computer::fset(f64 x, f64 y){
+    f64 delta = x - y;
+    this->m_zero = (delta == 0);
+    this->m_ltz = (delta < 0);
+    this->m_gtz = (delta > 0);
+}
+
 // -*----------------------------------------------------------------*-
 }//-*- end::namespace::swzcpu                                       -*-
 // -*----------------------------------------------------------------*-
