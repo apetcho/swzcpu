@@ -122,6 +122,192 @@ void Computer::fetch(){
     this->m_src = this->m_memory[this->m_pc+2];
 }
 
+void Computer::execute(){
+    switch(this->m_inst){
+    case Instruction::clf:
+        this->clear();
+        break;
+    case Instruction::cmp: // compare integers
+        this->set(this->m_regs[this->m_dest], this->m_regs[this->m_src]);
+        this->m_pc += 2;
+        break;
+    case Instruction::cmpi: // compare integers immediate
+        this->set(this->m_regs[this->m_dest], this->m_src);
+        this->m_pc += 2;
+        break;
+    case Instruction::cmpf: // compare float
+        this->fset(
+            this->m_fregs[this->m_dest-8],
+            static_cast<f64>(this->m_fregs[this->m_src-8])
+        );
+        this->m_pc += 2;
+        break;
+    case Instruction::cmpfi: // compare float immediate
+        this->fset(
+            this->m_fregs[this->m_dest-8], static_cast<f64>(this->m_src)
+        );
+        this->m_pc += 2;
+        break;
+    case Instruction::mov: // move  integer data
+        this->m_regs[this->m_dest] = this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::movf: // move float data
+        this->m_fregs[this->m_dest-8] = this->m_fregs[this->m_src - 8];
+        this->m_pc += 2;
+        break;
+    case Instruction::sti: // store integer data
+        this->m_memory[this->m_dest] = this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::stf:  // store float data
+        this->m_memory[this->m_dest] = static_cast<i64>(this->m_fregs[this->m_src-8]);
+        this->m_pc += 2;
+        break;
+    case Instruction::ldi:  // load integer data
+        this->m_regs[this->m_dest] = this->m_memory[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::ldf:  // load float data
+        this->m_fregs[this->m_dest-8] = static_cast<f64>(this->m_memory[this->m_src]);
+        this->m_pc += 2;
+        break;
+    case Instruction::lii:  // load immediate integer
+        this->m_regs[this->m_dest] = this->m_src;
+        this->m_pc += 2;
+        break;
+    case Instruction::lif:  // load immediate float
+        this->m_fregs[this->m_dest-8] = static_cast<f64>(this->m_src);
+        this->m_pc += 2;
+        break;
+    case Instruction::psh:  // push integer
+        this->m_memory[--this->m_sp] = this->m_regs[this->m_memory[++this->m_pc]];
+        break;
+    case Instruction::pshf: // push float
+        this->m_memory[--this->m_sp] = static_cast<i64>(
+            this->m_fregs[this->m_memory[++this->m_pc]-8]
+        );
+        break;
+    case Instruction::pop:
+        this->m_regs[this->m_memory[++this->m_pc]] = this->m_memory[this->m_sp++];
+        break;
+    case Instruction::popf:
+        this->m_fregs[this->m_memory[++this->m_pc]-8] = static_cast<f64>(
+            this->m_memory[this->m_sp++]
+        );
+        break;
+    case Instruction::inc:
+        this->m_regs[this->m_dest]++;
+        this->m_pc++;
+        break;
+    case Instruction::dec:
+        this->m_regs[this->m_dest]--;
+        this->m_pc++;
+        break;
+    case Instruction::add:
+        this->m_regs[this->m_dest] += this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::sub:
+        this->m_regs[this->m_dest] -= this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::mul:
+        this->m_regs[this->m_dest] *= this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::div:
+        this->m_regs[this->m_dest] /= this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::addf:
+        this->m_fregs[this->m_dest -8] += this->m_fregs[this->m_src - 8];
+        this->m_pc += 2;
+        break;
+    case Instruction::subf:
+        this->m_fregs[this->m_dest-8] -= this->m_fregs[this->m_src-8];
+        this->m_pc += 2;
+        break;
+    case Instruction::mulf:
+        this->m_fregs[this->m_dest-8] *= this->m_fregs[this->m_src-8];
+        this->m_pc += 2;
+        break;
+    case Instruction::divf:
+        this->m_fregs[this->m_dest-8] /= this->m_fregs[this->m_src-8];
+        this->m_pc += 2;
+        break;
+    case Instruction::jlz:
+        if(this->m_ltz){
+            this->m_pc = this->m_memory[++(this->m_pc)];
+        }else{
+            this->m_pc++;
+        }
+        break;
+    case Instruction::jgz:
+        if(this->m_gtz){
+            this->m_pc = this->m_memory[++(this->m_pc)];
+        }else{
+            this->m_pc++;
+        }
+        break;
+    case Instruction::jez:
+        if(this->m_zero){
+            this->m_pc = this->m_memory[++(this->m_pc)];
+        }else{
+            this->m_pc++;
+        }
+        break;
+    case Instruction::jnz:
+        if(!this->m_zero){
+            this->m_pc = this->m_memory[++(this->m_pc)];
+        }else{
+            this->m_pc++;
+        }
+        break;
+    case Instruction::jmp:
+        this->m_pc = this->m_memory[++(this->m_pc)];
+        break;
+    case Instruction::shl:
+        this->m_regs[this->m_dest] <<= this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::shr:
+        this->m_regs[this->m_dest] >>= this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::band:
+        this->m_regs[this->m_dest] &= this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::bor:
+        this->m_regs[this->m_dest] |= this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::bnot:
+        this->m_regs[this->m_dest] = ~this->m_regs[this->m_dest];
+        this->m_pc++;
+        break;
+    case Instruction::bxor:
+        this->m_regs[this->m_dest] ^= this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::land:
+        this->m_regs[this->m_dest] = this->m_regs[this->m_dest] && this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::lor:
+        this->m_regs[this->m_dest] = this->m_regs[this->m_dest] || this->m_regs[this->m_src];
+        this->m_pc += 2;
+        break;
+    case Instruction::lnot:
+        this->m_regs[this->m_dest] = !this->m_regs[this->m_dest];
+        this->m_pc++;
+        break;
+    default: // Instruction::hlt is handled in run() method
+        break;
+    }
+}
+
 // -*----------------------------------------------------------------*-
 }//-*- end::namespace::swzcpu                                       -*-
 // -*----------------------------------------------------------------*-
