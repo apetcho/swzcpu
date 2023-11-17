@@ -12,7 +12,28 @@ struct Example{
     Example(std::vector<swzcpu::i64> vec): code{vec}{}
 
     // -*- Make this a callable
-    void operator()(){}
+    void operator()(){
+        std::cout << "-*--------------------------------------*-\n";
+        std::cout << "-*-      I N S T R U C T I O N S       -*-\n";
+        std::cout << "-*--------------------------------------*-\n";
+        this->print(this->code);
+        std::cout << std::endl;
+        swzcpu::Computer cpu(this->code);
+        cpu.run();
+        std::cout << std::endl;
+        std::cout << "-*--------------------------------------*-\n";
+        std::cout << "-*-          R E G I S T E R S         -*-\n";
+        std::cout << "-*--------------------------------------*-\n";
+        this->print(cpu.registers());
+        std::cout << std::endl;
+        std::cout << "-*--------------------------------------*-\n";
+        std::cout << "-*- F L O A T I N G  R E G I S T E R S -*-\n";
+        std::cout << "-*--------------------------------------*-\n";
+        this->print(cpu.fregisters());
+        std::cout << std::endl;
+    }
+
+private:
     // -*-
     void print(const std::vector<swzcpu::i64>& vec){
         for(auto item: vec){
