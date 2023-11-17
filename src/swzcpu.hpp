@@ -77,7 +77,7 @@ private:
     std::array<i64, 8> m_fregs;
 
     // -*- instructions
-    i64 m_inst;
+    Instruction m_inst;
     i64 m_dest;
     i64 m_src;
 

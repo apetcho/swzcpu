@@ -91,7 +91,15 @@ Computer::Computer(std::vector<i64> code){
     this->init_instructions();
     this->m_sp = this->m_size - 1;
     this->m_pc = -1;
-    this->m_inst = 0;
+    this->m_inst = Instruction::clf;
+}
+
+// -*-
+void Computer::run(){
+    while(this->m_inst != Instruction::hlt){
+        this->fetch();
+        this->execute();
+    }
 }
 
 // -*----------------------------------------------------------------*-
