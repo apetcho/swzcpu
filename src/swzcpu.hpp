@@ -43,7 +43,7 @@ enum class Instruction: i64{
     lii, lif,
     // -
     psh, pop,
-    phsf, popf,
+    pshf, popf,
     // -
     inc, dec,
     // -
